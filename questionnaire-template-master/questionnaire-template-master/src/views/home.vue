@@ -150,9 +150,9 @@ export default {
         margin-bottom: 15px;
       }
       .btn {
-        width: 100px;
+        width: 120px;
         height: 40px;
-        font-size: 20px;
+        font-size: 16px;
         color: #fff;
         border-radius: 4px;
         display: block;
