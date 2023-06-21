@@ -1,0 +1,23 @@
+{
+  "id": "2842014",
+  "name": "xue'xiao",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2170932",
+      "name": "首页-首页",
+      "font_class": "shouye-shouye",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "5140392",
+      "name": "我的",
+      "font_class": "wode",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    }
+  ]
+}

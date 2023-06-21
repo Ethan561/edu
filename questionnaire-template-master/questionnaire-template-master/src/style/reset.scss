@@ -1,0 +1,210 @@
+/**
+ * yt.nie
+ * 20181213
+ */
+[v-cloak] {
+  display: none;
+}
+
+// 隐藏vconsole调试工具
+#__vconsole {
+  display: none;
+}
+
+// 显示vconsole调试工具
+.vc__show {
+  display: block !important;
+}
+
+/* rebot */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+  -ms-tap-highlight-color: transparent;
+}
+
+/* reset */
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  direction: ltr;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: "Microsoft YaHei", "Helvetica", "STHeiTi", "sans-serif";
+  /*移动端页面支持流畅滚动*/
+  -webkit-overflow-scrolling: touch;
+  /*让页面里的字体变清晰，变细*/
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  line-height: 1;
+  /*禁止页面复制*/
+  // -webkit-touch-callout: none;
+  // -webkit-user-select: none;
+  // -khtml-user-select: none;
+  // -moz-user-select: none;
+  // -ms-user-select: none;
+  // user-select: none;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+legend,
+button,
+input,
+textarea,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+
+/*去掉 a，input 在移动端浏览器中的默认样式*/
+
+a,
+button,
+input,
+optgroup,
+select,
+textarea {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  /*去掉a、input和button点击时的蓝色外边框和灰色半透明背景*/
+}
+
+address,
+cite,
+dfn,
+em,
+var {
+  font-style: normal;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: couriernew, courier, monospace;
+}
+
+small {
+  font-size: 12px;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+
+  &:hover,
+  &:visited,
+  &:active,
+  &:focus {
+    color: #000;
+  }
+}
+
+sup {
+  vertical-align: text-top;
+}
+
+sub {
+  vertical-align: text-bottom;
+}
+
+legend {
+  color: #000;
+}
+
+fieldset,
+img {
+  border: 0;
+}
+
+img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+  // 去掉input在ios上的默认圆角
+  // border-radius: 0;
+  // -webkit-appearance: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+/* 多行字体两端对齐 */
+.justify {
+  text-align: justify;
+  /*IE*/
+  text-justify: inter-ideograph;
+}
+
+/* 单行字体两端对齐 */
+.justify-single {
+  height: 20px; //**
+  line-height: 20px; //**
+  text-align: justify;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    width: 100%;
+    display: inline-block;
+  }
+}
+
+.user-select-dis {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

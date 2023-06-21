@@ -1,0 +1,20 @@
+/* rebot */
+:root {
+  --base-color: #0065E0; //基础色值
+  --base-color-light: #DBE9FB; //基础色值-浅
+  --base-bg-color: #F5F5F5; //基础背景色值
+  --base-select-color: #0065E0; //基础色值
+}
+
+// View
+$view-speed:0.4s;
+
+// Base
+$base-color:var(--base-color) !default;
+$base-color-light:var(--base-color-light) !default;
+$base-bg-color:var(--base-bg-color) !default;
+$base-select-color:var(--base-select-color) !default;
+
+// Border
+$border-color: #ebedf0;
+$border-width-base: 1px;

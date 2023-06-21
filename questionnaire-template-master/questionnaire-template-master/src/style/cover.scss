@@ -1,0 +1,224 @@
+@import './var';
+@import './mixin';
+
+//mescroll样式自定义
+//
+.mescroll {
+  background-color: $base-bg-color !important;
+
+  &-empty {
+
+    .empty-btn {
+      width: 248px !important;
+      height: 40px !important;
+      line-height: 40px !important;
+      max-width: unset !important;
+      color: #ffffff !important;
+      background: $base-color !important;
+      border-radius: 20px !important;
+      border: 0 !important;
+      padding: 0 !important;
+      margin-top: 50px !important;
+      font-size: 16px !important;
+    }
+  }
+}
+
+// zant-ui样式自定义
+// 
+.van {
+  &-cell {
+
+    &:not(:last-child)::after {
+      border: 0 !important;
+    }
+  }
+
+
+  &-field {
+    font-size: 15px !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    background-color: transparent !important;
+
+    &__body {
+
+      input {
+        appearance: none !important;
+        -moz-appearance: none !important;
+      }
+    }
+  }
+
+  &-dialog {
+    &__header {
+      font-size: 18px !important;
+    }
+
+    &__content {
+      .van-dialog__message {
+        &--has-title {
+          font-size: 16px !important;
+        }
+      }
+    }
+
+    &__footer {
+      .van-button {
+        &.van-dialog__confirm {
+          .van-button__text {
+            color: $base-color !important;
+          }
+        }
+      }
+    }
+  }
+
+  &-toast {
+    font-size: 15px !important;
+  }
+
+  &-skeleton {
+    padding: 10px 0 !important;
+
+    &__title,
+    &__row {
+      line-height: 30px !important;
+    }
+  }
+
+  &-notify {
+    padding: 10px 15px !important;
+    font-size: 15px !important;
+  }
+  &-checkbox{
+    margin-bottom: 10px;
+  }
+  &-picker {
+
+    &__toolbar {
+
+      .van-picker {
+        &__cancel {
+          color: #626262 !important;
+        }
+
+        &__confirm {
+          color: $base-color !important;
+        }
+      }
+    }
+  }
+}
+
+// 细线
+// 包含my-hairline的所有dom
+[class*='my-hairline'] {
+  &::after {
+    @include hairline();
+  }
+}
+
+.my-hairline {
+
+  &,
+  &--top,
+  &--left,
+  &--right,
+  &--bottom {
+    position: relative;
+  }
+
+  &--top::after {
+    border-top-width: $border-width-base;
+  }
+
+  &--left::after {
+    border-left-width: $border-width-base;
+  }
+
+  &--right::after {
+    border-right-width: $border-width-base;
+  }
+
+  &--bottom::after {
+    border-bottom-width: $border-width-base;
+  }
+}
+
+.flex {
+  &-start{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  &-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.margin{
+  &-top{
+    &__10{
+      margin-top:10px
+    }
+  }
+  &-bottom{
+    &__10{
+      margin-bottom:10px
+    }
+  }
+}
+
+
+/* 错误提示弹窗 */
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.block {
+  width: 300px;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  .p0 {
+    font-size: 16px;
+    font-family: "宋体";
+    font-weight: bold;
+    margin-bottom: 15px;
+    .tipimg {
+      width: 30px;
+      margin-right: 10px;
+    }
+  }
+  .p1 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .p2 {
+    margin: 20px 0;
+    line-height: 1.5;
+  }
+  .p3 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
+  .p4{
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: bold;
+  }
+}
+/deep/ .van-dialog {
+  border-radius: 6px;
+}

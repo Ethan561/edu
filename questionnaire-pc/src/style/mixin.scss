@@ -1,0 +1,135 @@
+// 多少行限制超出省略
+// 整个盒子的高度， 行数
+// @include ellipsis()
+// 
+@mixin ellipsis($line:1, $height:'') {
+  @if $line==1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: nowrap;
+  }
+
+  @else {
+    max-height: $height;
+    line-height: $height / $line;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $line;
+  }
+}
+
+//两端对齐
+@mixin text-jusify($ls:1px) {
+  letter-spacing: $ls;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  /*IE*/
+}
+
+// 2px边框
+@mixin border-2px($color:#ccc, $radius:2px, $style:solid) {
+  position: relative;
+
+  &::after {
+    content: "";
+    pointer-events: none;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-origin: 0 0;
+    border: 2px $style $color;
+    border-radius: $radius;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+
+    @media (min-resolution: 2dppx) {
+      width: 200%;
+      height: 200%;
+      border-radius: $radius * 2;
+      transform: scale(.5);
+    }
+
+    @media (min-resolution: 3dppx) {
+      width: 300%;
+      height: 300%;
+      border-radius: $radius * 3;
+      transform: scale(.333);
+    }
+  }
+}
+
+
+// 细边框
+@mixin hairline($border-color: #ebedf0) {
+  position: absolute;
+  box-sizing: border-box;
+  content: ' ';
+  pointer-events: none;
+  top: -50%;
+  right: -50%;
+  bottom: -50%;
+  left: -50%;
+  border: 0 solid $border-color;
+  transform: scale(0.5);
+}
+
+/* 分隔线 */
+@for $i from 1 through 5 {
+  .line-#{$i * 2} {
+    width: 100%;
+    height: #{$i * 2}px;
+    // 保持与系统背景色一致
+    background-color: #F5F5F5;
+  }
+}
+
+
+// 横向等分适配，超出往下顺移
+//
+// 需父容器flex支持 {display: flex;flex-wrap: wrap}
+//
+// $row-num单排数量
+// $line-space行间距
+// $cell-space单元格间距
+//
+@mixin layout-flex($row-num:7, $line-space:15px, $cell-space:1.5%) {
+  width: 100% / $row-num - $cell-space;
+
+  &:nth-child(n + #{$row-num + 1}) {
+    margin-top: $line-space;
+  }
+
+  &:not(:nth-child(#{$row-num}n)) {
+    margin-right: $cell-space * $row-num / ($row-num - 1);
+  }
+}
+@mixin x-padding-bottom($val:0px) {
+  padding-bottom: $val;
+  padding-bottom: calc(#{$val} + constant(safe-area-inset-bottom)) !important;
+  /* no */
+  padding-bottom: calc(#{$val} + env(safe-area-inset-bottom)) !important;
+  /* no */
+}
+/* 计算高度 */
+@mixin calc-h($val:0px) {
+  height: 100%;
+  height: calc(100% - #{$val} - constant(safe-area-inset-bottom)) !important;
+  /* no */
+  height: calc(100% - #{$val} - env(safe-area-inset-bottom)) !important;
+  /* no */
+}
+
+/* mescroll定位bottom */
+@mixin calc-bottom($val:0px) {
+  bottom: $val;
+  bottom: calc(#{$val} + constant(safe-area-inset-bottom)) !important;
+  /* no */
+  bottom: calc(#{$val} + env(safe-area-inset-bottom)) !important;
+  /* no */
+}
