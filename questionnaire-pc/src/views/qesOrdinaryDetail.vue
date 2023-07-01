@@ -35,7 +35,8 @@
           <div v-if="a.explain" class="explain" v-html="a.explain"></div>
           <!-- type  1单选，2判断，3多选，4填空,5简答,6文件（1图片，2视频，3音频）,7排序题，8矩阵量表，9NPS量表，10下拉,11矩阵选择,12矩阵填空,13自增填空,14量表题,15星级打分 -->
           <div class="quesItem">
-            <p class="quesTitle">{{ a.id }}、{{ a.title }}</p>
+            <p v-if="a.type != 4" class="quesTitle">{{ a.id }}、{{ a.title }}</p>
+            <p v-else class="quesTitle">{{ a.id }}、{{ a.blanks.content }}</p>
             <!-- 1单选 -->
             <van-radio-group
               v-if="a.type == 1"
@@ -495,8 +496,8 @@ export default {
       // if (this.desData.start) {
       //   let currentTime = datefmt();
       //   const flag = this.compareDate(this.desData.start, currentTime);
-          
-      //     let msg = "start: " + this.desData.start + "  current:" + currentTime; 
+
+      //     let msg = "start: " + this.desData.start + "  current:" + currentTime;
       //     alert(msg);
 
       //   if (flag) {
@@ -590,7 +591,7 @@ export default {
           /* 4 填空题 */
           if (a.type == 4 && a.must == 1) {
             let arr = [];
-            let arr_tk = document.querySelectorAll(".tk_" + i);
+            let arr_tk = document.querySelectorAll(".tk_" + a.id);
             arr_tk.forEach((o) => {
               arr.push(o.value);
             });
@@ -697,61 +698,67 @@ export default {
       HTTP_Accurate(this.$route.query.qid).then((res) => {
         // let res = mockjs;
         let list = res.data.list;
-        list.forEach((item, index) => {
-          /* 4  填空 */
-          if (item.type == 4) {
-            let arr = item.blanks.answer.split("&");
-            if (arr.length && arr.some((o) => o != "")) {
-              let abc = "";
-              abc = item.blanks.content;
-              let disabled = this.qesStatus == 1 ? "" : "disabled";
-              arr.forEach((ele, elei) => {
-                abc = abc.replace(
-                  /<fill>/,
-                  `<input class="fill tk_${index}" ${disabled} value="${ele}" type="text">`
-                );
-              });
-              item.blanks.h5content = abc;
-            } else {
-              item.blanks.answer = "";
-              item.blanks.h5content = item.blanks.content.replace(
-                /<fill>/gi,
-                `<input class="fill tk_${index}" type="text">`
-              );
-            }
-          }
-          /* 8  矩阵打分 */
-          if (item.type == 8) {
-            if (!item.scales.answer.length) {
-              item.scales.rows.forEach((o) => {
-                item.scales.answer.push(0);
-              });
-            }
-          }
-          /*11  矩阵选择 */
-          if (item.type == 11) {
-            if (!item.ju_choice.answer.length) {
-              item.ju_choice.answer = [];
-              item.ju_choice.rows.forEach((o, m) => {
-                item.ju_choice.answer.push([]);
-                item.ju_choice.cols.forEach((n, k) => {
-                  item.ju_choice.answer[m].push(0);
+
+        list.forEach((listA, index) => {
+          listA.forEach((item, index) => {
+            console.log("list.forEach : -- ", item);
+            /* 4  填空 */
+            if (item.type == 4) {
+              let arr = item.blanks.answer.split("&");
+              if (arr.length && arr.some((o) => o != "")) {
+                let abc = "";
+                abc = item.blanks.content;
+                let disabled = this.qesStatus == 1 ? "" : "disabled";
+                arr.forEach((ele, elei) => {
+                  abc = abc.replace(
+                    /<fill>/,
+                    `<input class="fill tk_${item.id}" ${disabled} value="${ele}" type="text">`
+                  );
                 });
-              });
+                item.blanks.h5content = abc;
+              } else {
+                item.blanks.answer = "";
+                // item.blanks.h5content = item.blanks.content.replace(
+                //   /<fill>/gi,
+                //   `<input class="fill tk_${index}" type="text">`
+                // );
+                item.blanks.h5content =  `<input class="fill tk_${item.id}" type="text">`;
+              }
             }
-          }
-          /*13  自增表格 */
-          if (item.type == 13) {
-            if (item.auto_grow.answers && !item.auto_grow.answers.length) {
-              item.auto_grow.answers = [];
-              let arr = [];
-              item.auto_grow.titles.forEach((o, m) => {
-                arr.push("");
-              });
-              item.auto_grow.answers.push(arr);
+            /* 8  矩阵打分 */
+            if (item.type == 8) {
+              if (!item.scales.answer.length) {
+                item.scales.rows.forEach((o) => {
+                  item.scales.answer.push(0);
+                });
+              }
             }
-          }
+            /*11  矩阵选择 */
+            if (item.type == 11) {
+              if (!item.ju_choice.answer.length) {
+                item.ju_choice.answer = [];
+                item.ju_choice.rows.forEach((o, m) => {
+                  item.ju_choice.answer.push([]);
+                  item.ju_choice.cols.forEach((n, k) => {
+                    item.ju_choice.answer[m].push(0);
+                  });
+                });
+              }
+            }
+            /*13  自增表格 */
+            if (item.type == 13) {
+              if (item.auto_grow.answers && !item.auto_grow.answers.length) {
+                item.auto_grow.answers = [];
+                let arr = [];
+                item.auto_grow.titles.forEach((o, m) => {
+                  arr.push("");
+                });
+                item.auto_grow.answers.push(arr);
+              }
+            }
+          });
         });
+
         this.list = list;
         this.listCopy = list[0];
         this.stepList = list.filter((o) => o.group);
@@ -785,7 +792,7 @@ export default {
 
       var beginTimes = beginTime.substring(0, 10).split("-");
       var endTimes = endTime.substring(0, 10).split("-");
-      
+
       beginTime =
         beginTimes[1] +
         "-" +
@@ -889,28 +896,31 @@ export default {
     save(action) {
       let write = JSON.stringify(flatten(this.list));
       let time = datefmt();
-      HTTP_AccurateSave(time, this.$route.query.qid, write, action).then((res) => {
-        if (action == 1) {
-          this.active = this.stepList.length - 1;
-          this.show = true;
-          this.isSaveShow = false;
-          this.isSaveSecussShow = true;
+      HTTP_AccurateSave(time, this.$route.query.qid, write, action).then(
+        (res) => {
+          if (action == 1) {
+            this.active = this.stepList.length - 1;
+            this.show = true;
+            this.isSaveShow = false;
+            this.isSaveSecussShow = true;
+          }
         }
-      });
+      );
     },
     saveAll(action) {
       let write = JSON.stringify(flatten(this.list));
       let time = datefmt();
-      HTTP_AccurateSaveAll(time, this.$route.query.qid, write, action).then((res) => {
-        if (action == 1) {
-          this.active = this.stepList.length - 1;
-          this.show = true;
-          this.isSaveShow = false;
-          this.isSaveSecussShow = true;
+      HTTP_AccurateSaveAll(time, this.$route.query.qid, write, action).then(
+        (res) => {
+          if (action == 1) {
+            this.active = this.stepList.length - 1;
+            this.show = true;
+            this.isSaveShow = false;
+            this.isSaveSecussShow = true;
+          }
         }
-      });
+      );
     },
-
 
     /* 点击提交问卷 */
     submitQes() {
