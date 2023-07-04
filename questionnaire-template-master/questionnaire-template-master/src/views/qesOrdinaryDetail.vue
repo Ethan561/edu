@@ -3,15 +3,22 @@
     <div v-if="desBoxShow" class="desBox">
       <div v-if="desData.des" class="desConent" v-html="desData.des"></div>
       <div v-if="desData.des" class="flex-center">
-        <van-button color="#176095" @click="desBoxShow=false" type="info">开始答题</van-button>
+        <van-button color="#176095" @click="desBoxShow = false" type="info"
+          >开始答题</van-button
+        >
       </div>
     </div>
     <van-sticky>
-      <v-header :is_save="$route.query.status == 1" @saveQes="save(0)"></v-header>
+      <v-header
+        :is_save="$route.query.status == 1"
+        @saveQes="save(0)"
+      ></v-header>
     </van-sticky>
     <van-sticky>
       <van-steps :active="active">
-        <van-step v-for="a,i in list" :key="i">第{{arrNum[i]}}部分</van-step>
+        <van-step v-for="(a, i) in list" :key="i"
+          >第{{ arrNum[i] }}部分</van-step
+        >
       </van-steps>
     </van-sticky>
     <van-swipe
@@ -27,7 +34,12 @@
           <div v-if="a.explain" class="explain" v-html="a.explain"></div>
           <!-- type  1单选，2判断，3多选，4填空,5简答,6文件（1图片，2视频，3音频）,7排序题，8矩阵量表，9NPS量表，10下拉,11矩阵选择,12矩阵填空,13自增填空,14量表题,15星级打分 -->
           <div class="quesItem">
-            <p class="quesTitle">{{ a.id }}、{{ a.title }}</p>
+            <!-- <p class="quesTitle">{{ a.id }}、{{ a.title }}</p> -->
+            <p v-if="a.type != 4" class="quesTitle">
+              {{ a.id }}、{{ a.title }}
+            </p>
+            <p v-else class="quesTitle">{{ a.id }}、{{ a.blanks.content }}</p>
+
             <!-- 1单选 -->
             <van-radio-group
               v-if="a.type == 1"
@@ -40,7 +52,8 @@
                 :key="j"
                 :name="j + 1"
                 checked-color="#0065E0"
-              >{{ b }}</van-radio>
+                >{{ b }}</van-radio
+              >
             </van-radio-group>
             <!-- 2判断 -->
             <van-radio-group
@@ -54,7 +67,8 @@
                 :key="j"
                 :name="j + 1"
                 checked-color="#0065E0"
-              >{{ b }}</van-radio>
+                >{{ b }}</van-radio
+              >
             </van-radio-group>
             <!-- 3多选 -->
             <van-checkbox-group
@@ -68,7 +82,8 @@
                 shape="square"
                 :key="j"
                 :name="j + 1"
-              >{{ b }}</van-checkbox>
+                >{{ b }}</van-checkbox
+              >
             </van-checkbox-group>
             <!-- 4填空 -->
             <div v-if="a.type == 4" v-html="a.blanks.h5content"></div>
@@ -143,14 +158,22 @@
               <div v-for="(b, j) in a.sorts" :key="b.id" class="sorts-item">
                 <p class="sorts-item__title">{{ b.title }}</p>
                 <div @click="sort(a.sorts, j)">
-                  <van-tag v-if="j > 0" type="primary" size="large">上移</van-tag>
-                  <van-tag v-if="j == 0" type="danger" size="large">下移</van-tag>
+                  <van-tag v-if="j > 0" type="primary" size="large"
+                    >上移</van-tag
+                  >
+                  <van-tag v-if="j == 0" type="danger" size="large"
+                    >下移</van-tag
+                  >
                 </div>
               </div>
             </div>
             <!-- 8矩阵量表 -->
             <ul v-if="a.type == 8" class="scales">
-              <li v-for="b, n in a.scales.rows" :key="b.id" class="scales-item flex-start">
+              <li
+                v-for="(b, n) in a.scales.rows"
+                :key="b.id"
+                class="scales-item flex-start"
+              >
                 <p class="scales-item__title">{{ b }}</p>
                 <!-- <van-rate color="#0065E0" :disabled="qesStatus == 2" :count="b.maxScore" v-model="b.score" /> -->
                 <van-radio-group
@@ -163,23 +186,31 @@
                     :key="j"
                     :name="j + 1"
                     checked-color="#0065E0"
-                  >{{ c }}</van-radio>
+                    >{{ c }}</van-radio
+                  >
                 </van-radio-group>
               </li>
             </ul>
             <!-- 9NPS量表 -->
             <div class="nps" v-if="a.type == 9">
-              <div style="margin-bottom:10px" class="flex-between">
+              <div style="margin-bottom: 10px" class="flex-between">
                 <p>{{ a.nps.header }}</p>
                 <p>{{ a.nps.footer }}</p>
               </div>
               <ul class="flex-start">
                 <li
-                  :style="{ background: b <= a.nps.answer ? qesStatus != 2 ? '#0065E0' : '#aaa' : '#fff' }"
+                  :style="{
+                    background:
+                      b <= a.nps.answer
+                        ? qesStatus != 2
+                          ? '#0065E0'
+                          : '#aaa'
+                        : '#fff',
+                  }"
                   v-for="b in +Math.abs(a.nps.maxScore)"
                   :key="b"
                   @click="selectedNps(a, b)"
-                ></li>
+                >{{b}}</li>
               </ul>
             </div>
             <!-- 10 下拉测试 -->
@@ -190,7 +221,13 @@
                 v-model="a.pull_choice.answer"
                 class="pull_choice"
               >
-                <option v-for="(b, j) in a.pull_choice.titles" :key="j" :value="j + 1">{{ b }}</option>
+                <option
+                  v-for="(b, j) in a.pull_choice.titles"
+                  :key="j"
+                  :value="j + 1"
+                >
+                  {{ b }}
+                </option>
               </select>
             </div>
             <!-- 11 矩阵选择 -->
@@ -217,10 +254,14 @@
             </div>
             <!-- 12 矩阵填空 -->
             <ul v-if="a.type == 12" class="scales">
-              <li v-for="(b, j) in a.scale_fill" :key="j" class="scales-item flex-start">
+              <li
+                v-for="(b, j) in a.scale_fill"
+                :key="j"
+                class="scales-item flex-start"
+              >
                 <p class="scales-item__title">{{ b.title }}</p>
                 <input
-                  style="width:50%"
+                  style="width: 50%"
                   class="juzhentk"
                   :disabled="qesStatus == 2"
                   v-model="b.answer"
@@ -249,8 +290,15 @@
                 </tr>
               </table>
               <div v-if="qesStatus != 2" class="btns">
-                <van-button type="info" icon="plus" @click="addRow(a.auto_grow)">添加行</van-button>
-                <van-button type="info" icon="minus" @click="deleteRow(a.auto_grow)">删除行</van-button>
+                <van-button type="info" icon="plus" @click="addRow(a.auto_grow)"
+                  >添加行</van-button
+                >
+                <van-button
+                  type="info"
+                  icon="minus"
+                  @click="deleteRow(a.auto_grow)"
+                  >删除行</van-button
+                >
               </div>
             </div>
             <!-- 14 量表题 -->
@@ -258,11 +306,16 @@
               <div class="type14 flex-start">
                 <p>{{ a.scale_score.header }}</p>
                 <van-radio-group
-                  style="margin:0 20px"
+                  style="margin: 0 20px"
                   :disabled="qesStatus == 2"
                   v-model="a.scale_score.answer"
                 >
-                  <van-radio v-for="j in +a.scale_score.maxScore" :key="j" :name="j">{{ j }}</van-radio>
+                  <van-radio
+                    v-for="j in +a.scale_score.maxScore"
+                    :key="j"
+                    :name="j"
+                    >{{ j }}</van-radio
+                  >
                 </van-radio-group>
                 <p>{{ a.scale_score.footer }}</p>
               </div>
@@ -272,7 +325,7 @@
               <div class="flex-start">
                 <p>{{ a.star_score.header }}</p>
                 <van-rate
-                  style="margin:0 20px"
+                  style="margin: 0 20px"
                   color="#0065E0"
                   :disabled="qesStatus == 2"
                   :count="+a.star_score.maxScore"
@@ -283,7 +336,7 @@
             </div>
             <!-- 16 看图答题 -->
             <div v-if="a.type == 16">
-              <img style="margin:0 auto 15px" :src="a.image_qa.img_url" alt />
+              <img style="margin: 0 auto 15px" :src="a.image_qa.img_url" alt />
               <van-field
                 v-model="a.image_qa.answer"
                 rows="6"
@@ -296,21 +349,29 @@
         </div>
         <!-- 切换分组 -->
         <div class="flex-center">
-          <div style="margin-right:30px">
-            <van-button v-if="j>0" color="#176095" @click="prevQes(j)" type="info">上一部分</van-button>
+          <div style="margin-right: 30px">
+            <van-button
+              v-if="j > 0"
+              color="#176095"
+              @click="prevQes(j)"
+              type="info"
+              >上一部分</van-button
+            >
           </div>
           <van-button
-            v-if="list.length>1&&j<list.length-1"
+            v-if="list.length > 1 && j < list.length - 1"
             color="#176095"
-            @click="nextQes(b,j+1)"
+            @click="nextQes(b, j + 1)"
             type="info"
-          >下一部分</van-button>
+            >下一部分</van-button
+          >
           <van-button
-            v-if="qesStatus != 2 && active==list.length-1"
+            v-if="qesStatus != 2 && active == list.length - 1"
             @click="submitQes"
             color="#176095"
             type="info"
-          >提交</van-button>
+            >提交</van-button
+          >
         </div>
       </van-swipe-item>
     </van-swipe>
@@ -321,16 +382,17 @@
           <p class="p0 flex-center">
             <img class="tipimg" src="~assets/tip.png" alt srcset /> 提示
           </p>
-          <p class="p1">第{{errorQes.id}}题:</p>
-          <p class="p2">{{errorQes.title}}</p>
+          <p class="p1">第{{ errorQes.id }}题:</p>
+          <p class="p2">{{ errorQes.title }}</p>
           <p class="p3">为必填类型，请完成答题</p>
           <div class="flex-center">
             <van-button
               @click="errorShow = false"
-              style="width:150px"
+              style="width: 150px"
               color="#176095"
               type="info"
-            >确认</van-button>
+              >确认</van-button
+            >
           </div>
         </div>
       </div>
@@ -346,12 +408,19 @@
           <div class="flex-center">
             <van-button
               @click="isSaveShow = false"
-              style="width:150px;margin-right: 20px;"
+              style="width: 150px; margin-right: 20px"
               plain
               color="#176095"
               type="info"
-            >取消</van-button>
-            <van-button @click="saveAll(1);" style="width:150px" color="#176095" type="info">确认</van-button>
+              >取消</van-button
+            >
+            <van-button
+              @click="saveAll(1)"
+              style="width: 150px"
+              color="#176095"
+              type="info"
+              >确认</van-button
+            >
           </div>
         </div>
       </div>
@@ -363,7 +432,13 @@
           <img class="logo" src="~assets/logo.png" />
           <p class="p4">提交成功！谢谢您的合作与支持！</p>
           <div class="flex-center">
-            <van-button @click="confirmDia" style="width:150px" color="#176095" type="info">关闭</van-button>
+            <van-button
+              @click="confirmDia"
+              style="width: 150px"
+              color="#176095"
+              type="info"
+              >关闭</van-button
+            >
           </div>
         </div>
       </div>
@@ -373,7 +448,12 @@
 
 <script>
 import vHeader from "@/components/vHeader";
-import { HTTP_Accurate, HTTP_AccurateSave, HTTP_AccurateSaveAll,  HTTP_Uploads } from "@/http/interface";
+import {
+  HTTP_Accurate,
+  HTTP_AccurateSave,
+  HTTP_AccurateSaveAll,
+  HTTP_Uploads,
+} from "@/http/interface";
 import { isObjArr, flatten, datefmt } from "@/utils/common.js";
 export default {
   data() {
@@ -418,7 +498,7 @@ export default {
         this.active = index;
       }
     },
-        /* 删除文件 */
+    /* 删除文件 */
     deleteItem(item) {
       if (this.qesStatus == 2) {
         return false;
@@ -484,7 +564,7 @@ export default {
           /* 4 填空题 */
           if (a.type == 4 && a.must == 1) {
             let arr = [];
-            let arr_tk = document.querySelectorAll(".tk_" + i);
+            let arr_tk = document.querySelectorAll(".tk_" + a.id);
             arr_tk.forEach((o) => {
               arr.push(o.value);
             });
@@ -591,61 +671,67 @@ export default {
       HTTP_Accurate(this.$route.query.qid).then((res) => {
         // let res = mockjs;
         let list = res.data.list;
-        list.forEach((item, index) => {
-          /* 4  填空 */
-          if (item.type == 4) {
-            let arr = item.blanks.answer.split("&");
-            if (arr.length && arr.some((o) => o != "")) {
-              let abc = "";
-              abc = item.blanks.content;
-              let disabled = this.qesStatus == 1 ? "" : "disabled";
-              arr.forEach((ele, elei) => {
-                abc = abc.replace(
-                  /<fill>/,
-                  `<input class="fill tk_${index}" ${disabled} value="${ele}" type="text">`
-                );
-              });
-              item.blanks.h5content = abc;
-            } else {
-              item.blanks.answer = "";
-              item.blanks.h5content = item.blanks.content.replace(
-                /<fill>/gi,
-                `<input class="fill tk_${index}" type="text">`
-              );
-            }
-          }
-          /* 8  矩阵打分 */
-          if (item.type == 8) {
-            if (!item.scales.answer.length) {
-              item.scales.rows.forEach((o) => {
-                item.scales.answer.push(0);
-              });
-            }
-          }
-          /*11  矩阵选择 */
-          if (item.type == 11) {
-            if (!item.ju_choice.answer.length) {
-              item.ju_choice.answer = [];
-              item.ju_choice.rows.forEach((o, m) => {
-                item.ju_choice.answer.push([]);
-                item.ju_choice.cols.forEach((n, k) => {
-                  item.ju_choice.answer[m].push(0);
+    
+        list.forEach((listA, index) => {
+          listA.forEach((item, index) => {
+            console.log("list.forEach : -- ", item);
+            /* 4  填空 */
+            if (item.type == 4) {
+              let arr = item.blanks.answer.split("&");
+              if (arr.length && arr.some((o) => o != "")) {
+                let abc = "";
+                abc = item.blanks.content;
+                let disabled = this.qesStatus == 1 ? "" : "disabled";
+                arr.forEach((ele, elei) => {
+                  abc = abc.replace(
+                    /<fill>/,
+                    `<input class="fill tk_${item.id}" ${disabled} value="${ele}" type="text">`
+                  );
                 });
-              });
+                item.blanks.h5content = abc;
+              } else {
+                item.blanks.answer = "";
+                // item.blanks.h5content = item.blanks.content.replace(
+                //   /<fill>/gi,
+                //   `<input class="fill tk_${index}" type="text">`
+                // );
+                item.blanks.h5content =  `<input class="fill tk_${item.id}" type="text">`;
+              }
             }
-          }
-          /*13  自增表格 */
-          if (item.type == 13) {
-            if (item.auto_grow.answers && !item.auto_grow.answers.length) {
-              item.auto_grow.answers = [];
-              let arr = [];
-              item.auto_grow.titles.forEach((o, m) => {
-                arr.push("");
-              });
-              item.auto_grow.answers.push(arr);
+            /* 8  矩阵打分 */
+            if (item.type == 8) {
+              if (!item.scales.answer.length) {
+                item.scales.rows.forEach((o) => {
+                  item.scales.answer.push(0);
+                });
+              }
             }
-          }
+            /*11  矩阵选择 */
+            if (item.type == 11) {
+              if (!item.ju_choice.answer.length) {
+                item.ju_choice.answer = [];
+                item.ju_choice.rows.forEach((o, m) => {
+                  item.ju_choice.answer.push([]);
+                  item.ju_choice.cols.forEach((n, k) => {
+                    item.ju_choice.answer[m].push(0);
+                  });
+                });
+              }
+            }
+            /*13  自增表格 */
+            if (item.type == 13) {
+              if (item.auto_grow.answers && !item.auto_grow.answers.length) {
+                item.auto_grow.answers = [];
+                let arr = [];
+                item.auto_grow.titles.forEach((o, m) => {
+                  arr.push("");
+                });
+                item.auto_grow.answers.push(arr);
+              }
+            }
+          });
         });
+
         this.list = list;
         this.listCopy = list[0];
         this.stepList = list.filter((o) => o.group);
@@ -730,7 +816,7 @@ export default {
         }
       });
     },
-    
+
     saveAll(action) {
       let write = JSON.stringify(flatten(this.list));
       HTTP_AccurateSaveAll(this.$route.query.qid, write, action).then((res) => {
@@ -742,7 +828,6 @@ export default {
         }
       });
     },
-
 
     /* 点击提交问卷 */
     submitQes() {
@@ -761,27 +846,25 @@ export default {
       this.show = false;
       this.isSaveSecussShow = false;
       var ua = window.navigator.userAgent.toLowerCase();
-      if (ua.match(/MicroMessenger/i) == 'micromessenger') {
-        console.log('是微信浏览器');
+      if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        console.log("是微信浏览器");
         setTimeout(function () {
           document.addEventListener(
-            'WeixinJSBridgeReady',
+            "WeixinJSBridgeReady",
             function () {
-              this.WeixinJSBridge.call('closeWindow') //安卓手机关闭代码
+              this.WeixinJSBridge.call("closeWindow"); //安卓手机关闭代码
             },
             false
-          )
-          this.WeixinJSBridge.call('closeWindow') //苹果手机关闭代码
-        }, 300)
-
+          );
+          this.WeixinJSBridge.call("closeWindow"); //苹果手机关闭代码
+        }, 300);
       } else {
-        console.log('不是微信浏览器');
-        window.opener = null
-        window.open('about:blank', '_top').close()
+        console.log("不是微信浏览器");
+        window.opener = null;
+        window.open("about:blank", "_top").close();
       }
       // this.$router.replace("/home");
     },
-
   },
 };
 </script>
@@ -815,6 +898,14 @@ export default {
   //   height: 50vh;
   //   overflow-y: auto;
   //   background: #000;
+  // }
+  // .desConent {
+  //   > p:first-child {
+  //     > span {
+  //       font-size: 10px !important;
+  //       line-height: 10px !important;
+  //     }
+  //   }
   // }
 }
 .quesTitle {
@@ -906,13 +997,16 @@ export default {
 
 /* nps打分 */
 .nps {
-  width: 500px;
+  position: relative;
+  // width: 500px;
   flex-wrap: nowrap;
   margin-top: 10px;
 
   li {
     width: 100%;
     height: 20px;
+    line-height: 20px;
+    text-align: center;
     border: 1px solid #333;
   }
 }
